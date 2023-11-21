@@ -2,7 +2,7 @@
 
 A simple Go program to print a Twitter User's list of followers, sorted by number of followers.
 
-This does **not** use or require API access.
+### This does **not** use or require API access.
 
 ![](./.github/IMAGES/preview.png)
 
