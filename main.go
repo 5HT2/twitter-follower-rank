@@ -12,8 +12,10 @@ import (
 )
 
 var (
-	printer = message.NewPrinter(language.English)
-	w1      = 9
+	printer    = message.NewPrinter(language.English)
+	w1         = 9
+	w2         = 7
+	thresholds = []int{1000000, 100000, 10000, 5000, 1000, 250}
 )
 
 type FetchFollowersRange struct {
@@ -175,8 +177,33 @@ func main() {
 	})
 
 	w1 = len(followers[len(followers)-1].Legacy.FollowersCountStr)
+	numFollowers := make([]int, len(thresholds))
 
-	for _, follower := range followers {
-		log.Printf("%s\n", follower)
+	for _, user := range followers {
+		for k, v := range thresholds {
+			if user.Legacy.FollowersCount >= v {
+				numFollowers[k]++
+				break // Break after incrementing the first applicable threshold
+			}
+		}
+
+		log.Printf("%s\n", user)
+	}
+
+	w2 = len(printer.Sprintf("%d", thresholds[0])) + 1
+	log.Printf("Followers with more than:")
+
+	for i := len(numFollowers) - 1; i >= 0; i-- {
+		if numFollowers[i] == 0 {
+			continue
+		}
+
+		threshold := printer.Sprintf("%d", thresholds[i])
+		log.Printf(
+			"  %s:%s%d",
+			threshold,
+			strings.Repeat(" ", w2-len(threshold)),
+			numFollowers[i],
+		)
 	}
 }
