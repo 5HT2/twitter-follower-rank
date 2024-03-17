@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"golang.org/x/text/language"
 	"golang.org/x/text/message"
@@ -16,6 +17,7 @@ var (
 	w1         = 9
 	w2         = 7
 	thresholds = []int{1000000, 100000, 10000, 5000, 1000, 250}
+	fileName   = flag.String("f", "data.json", "Data file to read")
 )
 
 type FetchFollowersRange struct {
@@ -133,7 +135,9 @@ func (f FollowingUser) String() string {
 }
 
 func main() {
-	d, err := os.ReadFile("data.json")
+	flag.Parse()
+
+	d, err := os.ReadFile(*fileName)
 	if err != nil {
 		log.Panicf("%v\n", err)
 	}
