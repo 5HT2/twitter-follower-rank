@@ -27,12 +27,11 @@ on run argv
             keystroke "followers[n].content.content = followers[n].content.#g"
             delay 0.1
             key code 36
-            delay 0.1
+            delay 0.15
             keystroke "n++"
             delay 0.1
             key code 36
-            delay 0.1
+            delay 0.15
         end repeat
     end tell
-
 end run
