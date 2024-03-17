@@ -13,11 +13,12 @@ import (
 )
 
 var (
-	printer    = message.NewPrinter(language.English)
-	w1         = 9
-	w2         = 7
-	thresholds = []int{1000000, 100000, 10000, 5000, 1000, 250}
-	fileName   = flag.String("f", "data.json", "Data file to read")
+	printer      = message.NewPrinter(language.English)
+	w1           = 9
+	w2           = 7
+	thresholds   = []int{1000000, 100000, 10000, 5000, 1000, 250}
+	fileName     = flag.String("f", "data.json", "Data file to read")
+	modeFollowed = flag.Bool("following", false, "Invert mutuals detection mode to the following tab instead of the followers tab")
 )
 
 type FetchFollowersRange struct {
@@ -82,7 +83,7 @@ type Follower struct {
 		WithheldInCountries     []interface{} `json:"withheld_in_countries" gorm:"column:withheld_in_countries"`
 		CanMediaTag             bool          `json:"can_media_tag" gorm:"column:can_media_tag"`
 		PinnedTweetIDsStr       []string      `json:"pinned_tweet_ids_str" gorm:"column:pinned_tweet_ids_str"`
-		FollowedBy              bool          `json:"followed_by" gorm:"column:followed_by"`
+		FollowedBy              FollowingUser `json:"followed_by" gorm:"column:followed_by"`
 		Following               FollowingUser `json:"following" gorm:"column:following"`
 		HasCustomTimelines      bool          `json:"has_custom_timelines" gorm:"column:has_custom_timelines"`
 		ScreenName              string        `json:"screen_name" gorm:"column:screen_name"`
@@ -115,11 +116,16 @@ type Follower struct {
 }
 
 func (f Follower) String() string {
-	return fmt.Sprintf("%v%s %s %s %s",
+	following := f.Legacy.Following
+	if *modeFollowed {
+		following = f.Legacy.FollowedBy
+	}
+
+	return fmt.Sprintf("%v%s %s %s%s",
 		f.Legacy.FollowersCountStr,
 		strings.Repeat(" ", w1-len(f.Legacy.FollowersCountStr)),
 		f.Legacy.ScreenName,
-		f.Legacy.Following,
+		following,
 		printer.Sprintf("(%d following)", f.Legacy.FriendsCount),
 	)
 }
@@ -128,7 +134,7 @@ type FollowingUser bool
 
 func (f FollowingUser) String() string {
 	if f {
-		return "(mutuals)"
+		return "(mutuals) "
 	} else {
 		return ""
 	}
