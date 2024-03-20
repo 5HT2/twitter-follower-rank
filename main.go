@@ -19,6 +19,8 @@ var (
 	thresholds   = []int{1000000, 100000, 10000, 5000, 1000, 250}
 	fileName     = flag.String("f", "data.json", "Data file to read")
 	modeFollowed = flag.Bool("following", false, "Invert mutuals detection mode to the following tab instead of the followers tab")
+	modeRatio    = flag.Bool("ratio", false, "Only display followers with a following:follower ratio of >= -ratioBuf")
+	modeRatioBuf = flag.Float64("ratioBuf", 0.9, "Buffer for ranked. e.g. If set to 0.9, it will display if (followers / following >= 0.9)")
 )
 
 type FetchFollowersRange struct {
@@ -102,6 +104,7 @@ type Follower struct {
 		DefaultProfile     bool `json:"default_profile" gorm:"column:default_profile"`
 		FollowersCount     int  `json:"followers_count" gorm:"column:followers_count"`
 		FollowersCountStr  string
+		FollowingRatioStr  string
 		Name               string `json:"name" gorm:"column:name"`
 		Location           string `json:"location" gorm:"column:location"`
 		FastFollowersCount int    `json:"fast_followers_count" gorm:"column:fast_followers_count"`
@@ -121,12 +124,13 @@ func (f Follower) String() string {
 		following = f.Legacy.FollowedBy
 	}
 
-	return fmt.Sprintf("%v%s %s %s%s",
+	return fmt.Sprintf("%v%s %s %s%s %s ratio)",
 		f.Legacy.FollowersCountStr,
 		strings.Repeat(" ", w1-len(f.Legacy.FollowersCountStr)),
 		f.Legacy.ScreenName,
 		following,
-		printer.Sprintf("(%d following)", f.Legacy.FriendsCount),
+		printer.Sprintf("(%d following", f.Legacy.FriendsCount),
+		f.Legacy.FollowingRatioStr,
 	)
 }
 
@@ -173,7 +177,17 @@ func main() {
 		for _, d1 := range followersContent.Data.User.Result.Timeline.Timeline.Instructions {
 			if d1.Type == "TimelineAddEntries" {
 				for _, entry := range d1.Entries {
-					entry.Content.ItemContent.UserResults.Result.Legacy.FollowersCountStr = printer.Sprintf("%d", entry.Content.ItemContent.UserResults.Result.Legacy.FollowersCount)
+					entryFollowersCount := entry.Content.ItemContent.UserResults.Result.Legacy.FollowersCount
+					entryFriendsCount := entry.Content.ItemContent.UserResults.Result.Legacy.FriendsCount
+					entryRatio := float64(entryFollowersCount) / float64(entryFriendsCount)
+
+					if *modeRatio && (entryRatio < *modeRatioBuf) {
+						continue
+					}
+
+					entry.Content.ItemContent.UserResults.Result.Legacy.FollowersCountStr = printer.Sprintf("%d", entryFollowersCount)
+					entry.Content.ItemContent.UserResults.Result.Legacy.FollowingRatioStr = fmt.Sprintf("%.2f", entryRatio)
+
 					followers = append(followers, entry.Content.ItemContent.UserResults.Result)
 				}
 			} else {
