@@ -82,6 +82,16 @@ Once you've scrolled all the way to the bottom, <kbd>Right Click</kbd> the outpu
 #### Congrats! Now you can create a file called `data.json` inside this project, and paste the JSON object into it.
 The program itself handles all of the parsing and such from that point.
 
+#### NOTE: Twitter attempted to patch this.
+As of 2024/03, it looks like Twitter switched to storing the follower info from `followers[n].content.content` to `followers[n].content.#g`.
+
+This is annoying, as it means the Chrome Dev tools don't include the final `.content` when doing "Copy Object", *but* there is a workaround.
+There's a `fix-chrome-private-field.applescript` script which you can run with `osascript fix-chrome-private-field.applescript [number of items]`.
+
+The script essentially just types out `followers[n].content.content = followers[n].content.#g` incrementally and increases `n`. You can't do this in a for loop in Chrome for some reason, as it will give you a private field access error.
+
+If you'd like a Linux version of the script, or know how to get around Chrome not allowing accessing private fields in a for loop, feel free to open an issue or message me (my contact info is listed on [my profile](https://github.com/5HT2)).
+
 ## Disclaimer(s)
 
 1. I have no idea if Twitter will care if you scroll down to the bottom of the followers tab, I'd advise you to tread with caution though.
