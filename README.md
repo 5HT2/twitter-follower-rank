@@ -22,6 +22,15 @@ make
 
 <!--- GENERATED FROM MAKEFILE -->
 ```bash
+Usage of ./twitter-follower-rank:
+  -f string
+        Data file to read (default "data.json")
+  -following
+        Invert mutuals detection mode to the following tab instead of the followers tab
+  -ratio
+        Only display followers with a following:follower ratio of >= -ratioBuf
+  -ratioBuf float
+        Buffer for ranked. e.g. If set to 0.9, it will display if (followers / following >= 0.9) (default 0.9)
 ```
 <!--- GENERATED FROM MAKEFILE -->
 
