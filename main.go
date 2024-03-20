@@ -190,8 +190,6 @@ func main() {
 
 					followers = append(followers, entry.Content.ItemContent.UserResults.Result)
 				}
-			} else {
-				log.Printf("Skipping: %v\n", d1)
 			}
 		}
 	}
