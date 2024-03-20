@@ -1,4 +1,4 @@
-module github.com/5HT2C/twitter-follower-rank
+module github.com/5HT2/twitter-follower-rank
 
 go 1.21.3
 
