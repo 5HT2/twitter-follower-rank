@@ -124,7 +124,7 @@ func (f Follower) String() string {
 		following = f.Legacy.FollowedBy
 	}
 
-	return fmt.Sprintf("%v%s %s %s%s %s ratio)",
+	return fmt.Sprintf("%v%s %s %s%s, %s ratio)",
 		f.Legacy.FollowersCountStr,
 		strings.Repeat(" ", w1-len(f.Legacy.FollowersCountStr)),
 		f.Legacy.ScreenName,
