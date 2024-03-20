@@ -177,16 +177,23 @@ func main() {
 		for _, d1 := range followersContent.Data.User.Result.Timeline.Timeline.Instructions {
 			if d1.Type == "TimelineAddEntries" {
 				for _, entry := range d1.Entries {
-					entryFollowersCount := entry.Content.ItemContent.UserResults.Result.Legacy.FollowersCount
-					entryFriendsCount := entry.Content.ItemContent.UserResults.Result.Legacy.FriendsCount
-					entryRatio := float64(entryFollowersCount) / float64(entryFriendsCount)
+					user := entry.Content.ItemContent.UserResults.Result.Legacy
 
-					if *modeRatio && (entryRatio < *modeRatioBuf) {
+					if len(user.ScreenName) == 0 { // no account info to display
 						continue
 					}
 
-					entry.Content.ItemContent.UserResults.Result.Legacy.FollowersCountStr = printer.Sprintf("%d", entryFollowersCount)
-					entry.Content.ItemContent.UserResults.Result.Legacy.FollowingRatioStr = fmt.Sprintf("%.2f", entryRatio)
+					userFollowersCount := user.FollowersCount
+					userFriendsCount := user.FriendsCount
+					userRatio := float64(userFollowersCount) / float64(userFriendsCount)
+
+					if *modeRatio && (userRatio < *modeRatioBuf) {
+						continue
+					}
+
+					user.FollowersCountStr = printer.Sprintf("%d", userFollowersCount)
+					user.FollowingRatioStr = fmt.Sprintf("%.2f", userRatio)
+					entry.Content.ItemContent.UserResults.Result.Legacy = user
 
 					followers = append(followers, entry.Content.ItemContent.UserResults.Result)
 				}
