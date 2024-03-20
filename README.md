@@ -20,7 +20,7 @@ make
 # That's it!
 ```
 
-<!--- GENERATED FROM MAKEFILE -->
+<!-- GENERATED FROM MAKEFILE -->
 ```
 Usage of ./twitter-follower-rank:
   -f string
@@ -32,7 +32,7 @@ Usage of ./twitter-follower-rank:
   -ratioBuf float
         Buffer for ranked. e.g. If set to 0.9, it will display if (followers / following >= 0.9) (default 0.9)
 ```
-<!--- GENERATED FROM MAKEFILE -->
+<!-- GENERATED FROM MAKEFILE -->
 
 ## What is a `data.json`
 
