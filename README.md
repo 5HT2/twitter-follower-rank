@@ -21,7 +21,7 @@ make
 ```
 
 <!--- GENERATED FROM MAKEFILE -->
-```bash
+```
 Usage of ./twitter-follower-rank:
   -f string
         Data file to read (default "data.json")
