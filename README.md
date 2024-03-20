@@ -10,7 +10,7 @@ A simple Go program to print a Twitter User's list of followers, sorted by numbe
 
 ```bash
 # Get repo && cd
-git clone https://github.com/5HT2C/twitter-follower-rank && cd twitter-follower-rank
+git clone https://github.com/5HT2/twitter-follower-rank && cd twitter-follower-rank
 ```
 ```bash
 # Build
