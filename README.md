@@ -57,7 +57,7 @@ In the future, I'll probably add a way to also do this via Twitter's GDPR data r
 4. Once at the bottom, open a _new_ Dev Tools window for your existing Dev Tools window with <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>I</kbd> (yes, debug inception).
 5. In the new Dev Tools window, open the console tab (taken from [StackOverflow](https://stackoverflow.com/a/57782978), works on Chrome 111 or newer) and run this:
 ```javascript
-await (async () => {
+let followers = await (async () => {
   const getContent = r => r.url() && !r.url().startsWith('data:') && r.contentData();
   const nodes = UI.panels.network.networkLogView.dataGrid.rootNode().flatChildren();
   const requests = nodes.map(n => n.request());
