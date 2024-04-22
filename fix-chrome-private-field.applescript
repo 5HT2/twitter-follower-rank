@@ -24,7 +24,9 @@ on run argv
         delay 0.15
 
         repeat with i from 0 to limit
-            keystroke "followers[n].content.content = followers[n].content.#e"
+            keystroke "followers[n].content.content"
+            delay 0.1
+            keystroke " = followers[n].content.#e"
             delay 0.1
             key code 36
             delay 0.15
