@@ -40,7 +40,7 @@ Usage of ./twitter-follower-rank:
 
 ---
 
-The dates given here are **examples**, to show how the sort order works.
+The dates given here are **examples**, to show how the sort order works. It will use the first valid file that it finds.
 - The flag `-f` is always prioritized as first, and is only ignored if the provided file cannot be read / does not exist.
 - The `data.json` value is always **last** as a final fallback.
 - The rest of the files are found from the existing files in the current working directory.
