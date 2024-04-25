@@ -4,12 +4,15 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"golang.org/x/text/language"
-	"golang.org/x/text/message"
 	"log"
 	"os"
+	"regexp"
+	"slices"
 	"sort"
 	"strings"
+
+	"golang.org/x/text/language"
+	"golang.org/x/text/message"
 )
 
 var (
@@ -17,7 +20,9 @@ var (
 	w1           = 9
 	w2           = 7
 	thresholds   = []int{1000000, 100000, 10000, 5000, 1000, 250}
-	fileName     = flag.String("f", "data.json", "Data file to read")
+	defaultFile  = "data.json"
+	dataRegex    = regexp.MustCompile(`data-[0-9]{4}-[0-9]{2}-[0-9]{2}(-following)?\.json`)
+	fileName     = flag.String("f", "", fmt.Sprintf("Data file to read (default \"%s\" or matching \"%s\")", defaultFile, dataRegex.String()))
 	modeFollowed = flag.Bool("following", false, "Invert mutuals detection mode to the following tab instead of the followers tab")
 	modeRatio    = flag.Bool("ratio", false, "Only display followers with a following:follower ratio of >= -ratioBuf")
 	modeRatioBuf = flag.Float64("ratioBuf", 0.9, "Buffer for ranked. e.g. If set to 0.9, it will display if (followers / following >= 0.9)")
@@ -147,9 +152,12 @@ func (f FollowingUser) String() string {
 func main() {
 	flag.Parse()
 
-	d, err := os.ReadFile(*fileName)
+	dataFiles := findFiles()
+	d, dfn, err := unsafeReadFiles(dataFiles)
 	if err != nil {
 		log.Panicf("%v\n", err)
+	} else {
+		log.Printf("Data from: \"%s\"\n", dfn)
 	}
 
 	followersRange := make([]FetchFollowersRange, 0)
@@ -235,4 +243,67 @@ func main() {
 			numFollowers[i],
 		)
 	}
+}
+
+func findFiles() []string {
+	files := make([]string, 0)
+	f := *fileName
+
+	// First try the user-specified file
+	if f != "" {
+		files = append(files, f)
+	}
+
+	// Now we want to find files matching dataRegex, in order of most recent
+	if de, err := os.ReadDir("."); err != nil {
+		return files
+	} else {
+		filesUnsorted := make([]string, 0)
+
+		for _, e := range de {
+			// Don't continue on directories or files not matching the regex
+			if e.IsDir() || !dataRegex.MatchString(e.Name()) {
+				continue
+			}
+
+			em := dataRegex.FindStringSubmatch(e.Name())
+			if len(em) != 2 { // Shouldn't ever happen, safety check
+				continue
+			}
+
+			// If we have modeFollowed enabled we want to require -following in the filename
+			if *modeFollowed == (em[1] == "-following") {
+				filesUnsorted = append(filesUnsorted, em[0])
+			}
+		}
+
+		slices.Sort(filesUnsorted)
+		slices.Reverse(filesUnsorted)
+		files = append(files, filesUnsorted...)
+	}
+
+	// Lastly, try the default file, if we haven't already added it
+	if f != defaultFile {
+		files = append(files, defaultFile)
+	}
+
+	return files
+}
+
+// unsafeReadFiles will read a slice of filenames until it successfully opens one, and returns its contents.
+// It will return the very first error it encountered if it does not find a file.
+func unsafeReadFiles(files []string) ([]byte, string, error) {
+	var err error
+	var efn string
+
+	for n, s := range files {
+		if d, errTmp := os.ReadFile(s); errTmp == nil {
+			return d, s, nil
+		} else if n == 0 {
+			err = errTmp
+			efn = s
+		}
+	}
+
+	return nil, efn, err
 }
