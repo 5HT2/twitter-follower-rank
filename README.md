@@ -24,7 +24,7 @@ make
 ```
 Usage of ./twitter-follower-rank:
   -f string
-        Data file to read (default "data.json")
+        Data file to read (default "data.json" or matching "data-[0-9]{4}-[0-9]{2}-[0-9]{2}(-following)?.json")
   -following
         Invert mutuals detection mode to the following tab instead of the followers tab
   -ratio
