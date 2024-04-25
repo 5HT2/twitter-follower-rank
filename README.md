@@ -34,7 +34,7 @@ Usage of ./twitter-follower-rank:
 ```
 <!-- GENERATED FROM MAKEFILE -->
 
-#### Auto select `data.json` file
+### Auto select `data.json` file
 
 <details><summary>An explanation of how automatically selecting a data file works:</summary>
 
