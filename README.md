@@ -34,6 +34,34 @@ Usage of ./twitter-follower-rank:
 ```
 <!-- GENERATED FROM MAKEFILE -->
 
+#### Auto select `data.json` file
+
+<details><summary>An explanation of how automatically selecting a data file works:</summary>
+
+The dates given here are **examples**, to show how the sort order works.
+- The flag `-f` is always prioritized as first, and is only ignored if the provided file cannot be read / does not exist.
+- The `data.json` value is always **last** as a final fallback.
+- The rest of the files are found from the existing files in the current working directory.
+
+By default, the data file will by selected in this order:
+```
+my-custom-file.json (optionally set by -f)
+data-2024-04-20.json
+data-2024-03-01.json
+data-2023-11-30.json
+data.json
+```
+
+If you have the `-following` flag set it would instead look like this:
+```
+my-custom-file.json (optionally set by -f)
+data-2024-04-20-following.json
+data-2024-03-01-following.json
+data.json
+```
+
+</details>
+
 ## What is a `data.json`
 
 The way that this works is by leveraging Twitter's own Followers tab, and simply grabbing an object of all the requests.
