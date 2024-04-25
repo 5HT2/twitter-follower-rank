@@ -37,7 +37,7 @@ Usage of ./twitter-follower-rank:
 ### Auto select `data.json` file
 
 <details><summary>An explanation of how automatically selecting a data file works:</summary>
-
+<br>
 
 The dates given here are **examples**, to show how the sort order works.
 - The flag `-f` is always prioritized as first, and is only ignored if the provided file cannot be read / does not exist.
