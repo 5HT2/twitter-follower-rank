@@ -45,7 +45,8 @@ type FetchFollowersContent struct {
 				Timeline struct {
 					Timeline struct {
 						Instructions []struct {
-							Entries []struct {
+							Direction string `json:"direction,omitempty"` // New: added between 2024-11-29 → 2024-12-12
+							Entries   []struct {
 								SortIndex string `json:"sortIndex" gorm:"column:sortIndex"`
 								Content   struct {
 									EntryType   string `json:"entryType" gorm:"column:entryType"`
@@ -56,12 +57,14 @@ type FetchFollowersContent struct {
 											Result Follower `json:"result" gorm:"column:result"`
 										} `json:"user_results" gorm:"column:user_results"`
 										UserDisplayType string `json:"userDisplayType" gorm:"column:userDisplayType"`
-									} `json:"itemContent" gorm:"column:itemContent"`
+									} `json:"itemContent,omitempty" gorm:"column:itemContent"`
 									Typename        string `json:"__typename" gorm:"column:__typename"`
 									ClientEventInfo struct {
 										Component string `json:"component" gorm:"column:component"`
 										Element   string `json:"element" gorm:"column:element"`
-									} `json:"clientEventInfo" gorm:"column:clientEventInfo"`
+									} `json:"clientEventInfo,omitempty" gorm:"column:clientEventInfo"`
+									Value      string `json:"value,omitempty"`      // New: added between 2024-11-29 → 2024-12-12
+									CursorType string `json:"cursorType,omitempty"` // New: added between 2024-11-29 → 2024-12-12
 								} `json:"content" gorm:"column:content"`
 								EntryID string `json:"entryId" gorm:"column:entryId"`
 							} `json:"entries" gorm:"column:entries"`
