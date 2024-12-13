@@ -95,7 +95,11 @@ In the future, I'll probably add a way to also do this via Twitter's GDPR data r
 3. Now, open the followers menu on Twitter, or visit https://[domain]/username/followers.
 4. Scroll all the way to the bottom, just keep in mind that going too fast will rate-limit you. If you hit the limit, just wait 30min - 1h.
 5. Once at the bottom, open a _new_ Dev Tools window for your existing Dev Tools window with <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>I</kbd> (yes, debug inception).
-6. In the new Dev Tools window, open the console tab (taken from [StackOverflow](https://stackoverflow.com/a/57782978), works on Chrome 111 or newer) and run this:
+6. In the new Dev Tools window, open the console tab (taken from StackOverflow[^1][^2]), works on Chrome 118 or newer) and run the following:
+> [!IMPORTANT]
+> If you encounter an error complaining about `r.contentData()`, use the newer ≥ 118 version.
+<details><summary><b>Chrome / Edge ≥ 118</b>[^1]</summary>
+
 ```javascript
 let followers = await (async () => {
   const getContent = r => r.url() && !r.url().startsWith('data:') && r.contentData();
@@ -114,6 +118,28 @@ let followers = await (async () => {
   });
 })();
 ```
+</details>
+<details><summary><b>Chrome / Edge ≥ 111 ≤ 117</b>[^2]</summary>
+
+  ```javascript
+  let followers = await (async () => {
+  const getContent = r => r.url() && !r.url().startsWith('data:') && r.contentData();
+  const nodes = UI.panels.network.networkLogView.dataGrid.rootNode().flatChildren();
+  const requests = nodes.map(n => n.request());
+  const contents = await Promise.all(requests.map(getContent));
+  return contents.map((data, i) => {
+  const r = requests[i];
+  const url = r.url();
+  const body = data?.content;
+  const content = !data ? url :
+  r.contentType().isTextType() ? data :
+  typeof body !== 'string' ? body :
+  `data:${r.mimeType}${data.encoded ? ';base64' : ''},${body}`;
+  return { url, content };
+  });
+  })();
+  ```
+</details>
 
 Once you've scrolled all the way to the bottom, <kbd>Right Click</kbd> the output of the last console command, and do "Copy Object".
 
@@ -128,12 +154,20 @@ As of 2024/03, Twitter switched from `followers[n].content.content` to `follower
 As of 2024/04, Twitter switched from `followers[n].content.#g` to `followers[n].content.#e`.
 As of 2024/12, Twitter switched from `followers[n].content.#e` to `followers[n].content`.
 
+**The patch is currently __unnecessary__!!**
+
+As of fbf4d3024a2f20509e40baf95ae79693c4fbd499 it is automagically supported.
+
+<details><summary>Patch workaround (currently unnecessary)</summary>
+
 This is annoying, as it means the Chrome Dev tools don't include the final `.content` when doing "Copy Object", *but* there is a workaround.
 There's a `fix-chrome-private-field.applescript` script which you can run with `osascript fix-chrome-private-field.applescript [number of items]`.
 
 The script essentially just types out `followers[n].content.content = followers[n].content.#e` incrementally and increases `n`. You can't do this in a for loop in Chrome for some reason, as it will give you a private field access error.
 
 If you'd like a Linux version of the script, or know how to get around Chrome not allowing accessing private fields in a for loop, feel free to open an issue or message me (my contact info is listed on [my profile](https://github.com/5HT2)).
+
+</details>
 
 ## Disclaimer(s)
 
@@ -143,3 +177,6 @@ If you'd like a Linux version of the script, or know how to get around Chrome no
 4. This data appears to be kind of cached on the server, if someone changes their username the old one is still sent in a response (multiple weeks after the username change). There's no error checking for empty profiles either.
 For the most part, it's functional, with the rare 1 or 2 duplicate accounts, the follower counts might also be a lil outdated, this is just Twitter's caching / optimization stuff on their end.
 5. Idk this is really janky, if it breaks or there's something you want me to fix, feel free to ask lol
+
+[^1]: https://stackoverflow.com/a/57782978
+[^2]: https://stackoverflow.com/a/78999261
