@@ -162,12 +162,14 @@ let followers = await (async () => {
 > ./twitter-follower-rank -f data.json
 > ```
 
+---
 
-#### Twitter attempted to patch this (multiple times).
+#### Patch workaround
 > [!NOTE]
-> As of 2024/03, Twitter switched from `followers[n].content.content` to `followers[n].content.#g`.<br>
-> As of 2024/04, Twitter switched from `followers[n].content.#g` to `followers[n].content.#e`.
-> As of 2024/12, Twitter switched from `followers[n].content.#e` to `followers[n].content`.
+> Twitter attempted to patch this (multiple times).
+> - As of 2024/03, Twitter switched from `followers[n].content.content` to `followers[n].content.#g`.<br>
+> - As of 2024/04, Twitter switched from `followers[n].content.#g` to `followers[n].content.#e`.
+> - As of 2024/12, Twitter switched from `followers[n].content.#e` to `followers[n].content`.
 
 > [!TIP]
 > **The patch is currently __unnecessary__!!**
@@ -184,6 +186,8 @@ The script essentially just types out `followers[n].content.content = followers[
 If you'd like a Linux version of the script, or know how to get around Chrome not allowing accessing private fields in a for loop, feel free to open an issue or message me (my contact info is listed on [my profile](https://github.com/5HT2)).
 
 </details>
+
+---
 
 ## Disclaimer(s)
 
