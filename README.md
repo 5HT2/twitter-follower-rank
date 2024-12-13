@@ -174,7 +174,7 @@ let followers = await (async () => {
 > [!TIP]
 > **The patch is currently __unnecessary__!!**
 > 
-> As of fbf4d3024a2f20509e40baf95ae79693c4fbd499 it is automagically supported.
+> As of https://github.com/5HT2/twitter-follower-rank/commit/fbf4d3024a2f20509e40baf95ae79693c4fbd499 it is automagically supported.
 
 <details><summary>Patch workaround (currently unnecessary)</summary>
 
