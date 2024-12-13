@@ -1,9 +1,9 @@
 # twitter-follower-rank
 
-### A simple Go program to print a Twitter User's list of followers, sorted by number of followers.
+#### A simple Go program to print a Twitter User's list of followers, sorted by number of followers.
 
 > [!CAUTION]
-> #### This does **not** use or require API access.
+> This does **not** use or require API access.
 > Please read [disclaimer(s) section](#disclaimers) first.
 
 ![](./.github/IMAGES/preview.png)
