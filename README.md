@@ -149,23 +149,30 @@ let followers = await (async () => {
   })();
   ```
 </details>
+7. Once you've scrolled all the way to the bottom, <kbd>Right Click</kbd> → <kbd>"Copy Object"</kbd> on the output of the last console command.
+<img src="./.github/IMAGES/chrome.png" alt="Screenshot of Chrome Devtools, the user is right-clicking the object output"/>
+8. Congrats! Now you can create a file called `data.json` inside this project, and paste the JSON object into it.
 
-Once you've scrolled all the way to the bottom, <kbd>Right Click</kbd> the output of the last console command, and do "Copy Object".
+## Using the `data.json`
+> [!TIP]
+> The program itself handles all the parsing and such from that point.
+> Please see [the usage section](#usage) for a list of program flags, the simplest arguments are as follows:
+> ```shell
+> # You can even omit the -f flag, as it will auto-select the file for you.
+> ./twitter-follower-rank -f data.json
+> ```
 
-![](./.github/IMAGES/chrome.png)
 
-#### Congrats! Now you can create a file called `data.json` inside this project, and paste the JSON object into it.
-The program itself handles all of the parsing and such from that point.
+#### Twitter attempted to patch this (multiple times).
+> [!NOTE]
+> As of 2024/03, Twitter switched from `followers[n].content.content` to `followers[n].content.#g`.<br>
+> As of 2024/04, Twitter switched from `followers[n].content.#g` to `followers[n].content.#e`.
+> As of 2024/12, Twitter switched from `followers[n].content.#e` to `followers[n].content`.
 
-#### NOTE: Twitter attempted to patch this (multiple times).
-
-As of 2024/03, Twitter switched from `followers[n].content.content` to `followers[n].content.#g`.<br>
-As of 2024/04, Twitter switched from `followers[n].content.#g` to `followers[n].content.#e`.
-As of 2024/12, Twitter switched from `followers[n].content.#e` to `followers[n].content`.
-
-**The patch is currently __unnecessary__!!**
-
-As of fbf4d3024a2f20509e40baf95ae79693c4fbd499 it is automagically supported.
+> [!TIP]
+> **The patch is currently __unnecessary__!!**
+> 
+> As of fbf4d3024a2f20509e40baf95ae79693c4fbd499 it is automagically supported.
 
 <details><summary>Patch workaround (currently unnecessary)</summary>
 
