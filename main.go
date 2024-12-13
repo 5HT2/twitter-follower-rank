@@ -29,12 +29,45 @@ var (
 )
 
 type FetchFollowersRange struct {
-	Url     string `json:"url" gorm:"column:url"`
-	Content struct {
-		Error   interface{} `json:"error" gorm:"column:error"`
-		Content string      `json:"content" gorm:"column:content"`
-		Encoded bool        `json:"encoded" gorm:"column:encoded"`
-	} `json:"content" gorm:"column:content"`
+	Url           string      `json:"url" gorm:"column:url"`
+	Content       interface{} `json:"content" gorm:"column:content"`
+	contentString string
+}
+
+func (f *FetchFollowersRange) UnmarshalJSON(b []byte) error {
+	var fJSON FetchFollowersRange
+	var cJSON map[string]interface{}
+
+	if err := json.Unmarshal(b, &cJSON); err != nil {
+		return err
+	}
+
+	contentStr := ""
+	if cJSONContent, ok := cJSON["content"]; ok {
+		if cJSONContentMap, ok := cJSONContent.(map[string]interface{}); ok {
+			if cJSONContentContent, ok := cJSONContentMap["content"]; ok {
+				contentStr = fmt.Sprintf("%s", cJSONContentContent)
+			} else {
+				return fmt.Errorf("fatal: cJSONContentContent") // literally how
+			}
+		} else {
+			contentStr = fmt.Sprintf("%s", cJSONContent)
+		}
+	} else {
+		return fmt.Errorf("fatal: cJSONContent") // probably nil idk
+	}
+
+	fJSON = FetchFollowersRange{
+		Content:       contentStr,
+		contentString: contentStr,
+	}
+	*f = fJSON
+	return nil
+}
+
+func (f *FetchFollowersRange) MarshalJSON() ([]byte, error) {
+	var u = *f
+	return json.MarshalIndent(u, "", "    ")
 }
 
 type FetchFollowersContent struct {
@@ -176,12 +209,12 @@ func main() {
 		//}
 
 		// Allow skipping rate-limited error responses that aren't JSON
-		if len(r.Content.Content) == 0 || r.Content.Content[0] != '{' {
+		if len(r.contentString) == 0 || r.contentString[0] != '{' {
 			continue
 		}
 
 		followersContent := FetchFollowersContent{}
-		if err := json.Unmarshal([]byte(r.Content.Content), &followersContent); err != nil {
+		if err := json.Unmarshal([]byte(r.contentString), &followersContent); err != nil {
 			log.Panicf("%v\n", err)
 		}
 
