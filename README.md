@@ -27,6 +27,14 @@ Usage of ./twitter-follower-rank:
         Data file to read (default "data.json" or matching "data-[0-9]{4}-[0-9]{2}-[0-9]{2}(-following)?.json")
   -following
         Invert mutuals detection mode to the following tab instead of the followers tab
+  -maxFollowers int
+        Filter to <= this many followers
+  -maxFollowing int
+        Filter to <= this many following
+  -minFollowers int
+        Filter to >= this many followers
+  -minFollowing int
+        Filter to >= this many following
   -ratio
         Only display followers with a following:follower ratio of >= -ratioBuf
   -ratioBuf float
