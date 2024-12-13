@@ -94,8 +94,8 @@ In the future, I'll probably add a way to also do this via Twitter's GDPR data r
 2. In the network tab, search the text `Followers?`. This will filter it to only the requests we want.
 3. Now, open the followers menu on Twitter, or visit https://[domain]/username/followers.
 4. Scroll all the way to the bottom, just keep in mind that going too fast will rate-limit you. If you hit the limit, just wait 30min - 1h.
-4. Once at the bottom, open a _new_ Dev Tools window for your existing Dev Tools window with <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>I</kbd> (yes, debug inception).
-5. In the new Dev Tools window, open the console tab (taken from [StackOverflow](https://stackoverflow.com/a/57782978), works on Chrome 111 or newer) and run this:
+5. Once at the bottom, open a _new_ Dev Tools window for your existing Dev Tools window with <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>I</kbd> (yes, debug inception).
+6. In the new Dev Tools window, open the console tab (taken from [StackOverflow](https://stackoverflow.com/a/57782978), works on Chrome 111 or newer) and run this:
 ```javascript
 let followers = await (async () => {
   const getContent = r => r.url() && !r.url().startsWith('data:') && r.contentData();
