@@ -8,6 +8,16 @@
 
 ![](./.github/IMAGES/preview.png)
 
+> [!IMPORTANT]
+> #### Pros
+> - No $$$ API key
+> - It just works
+>
+>#### Cons
+> - Come up with some way to scroll down. I did it by hand.
+> - After ~2k followers I got rate-limited with a 429 response. Go make some tea and come back.
+
+
 ## Usage
 
 ```bash
@@ -81,14 +91,11 @@ data.json
 The way that this works is by leveraging Twitter's own Followers tab, and simply grabbing an object of all the requests.
 
 In the future, I'll probably add a way to also do this via Twitter's GDPR data request, assuming it includes enough info to not have to scrape.
-#### Pros
 
-- No $$$ API key
-- It just works
-
-#### Cons
-- Come up with some way to scroll down. I did it by hand.
-- After ~2k followers I got rate-limited with a 429 response. Go make some tea and come back.
+> [!TIP]
+> TLDR:
+> The `data.json` is created from the requests
+> that your browser sends when loading a `/followers` or `/following` tab for a user profile.
 
 ## How to get your very own `data.json`
 
