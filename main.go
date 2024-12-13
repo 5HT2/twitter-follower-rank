@@ -363,9 +363,13 @@ func unsafeReadFiles(files []string) ([]byte, string, error) {
 	for n, s := range files {
 		if d, errTmp := os.ReadFile(s); errTmp == nil {
 			return d, s, nil
-		} else if n == 0 {
-			err = errTmp
-			efn = s
+		} else {
+			if n == 0 {
+				err = errTmp
+				efn = s
+			}
+
+			log.Printf("unsafeReadFiles: %s: %s\n", efn, err)
 		}
 	}
 
