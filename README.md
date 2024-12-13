@@ -2,7 +2,9 @@
 
 A simple Go program to print a Twitter User's list of followers, sorted by number of followers.
 
-### This does **not** use or require API access.
+> [!CAUTION]
+> ### This does **not** use or require API access.
+> Please read [disclaimer(s) section](#disclaimers) first.
 
 ![](./.github/IMAGES/preview.png)
 
@@ -180,5 +182,5 @@ For the most part, it's functional, with the rare 1 or 2 duplicate accounts, the
 
 [^1]: https://stackoverflow.com/a/57782978 (Chrome JS code >= 111 <= 117)
 [^2]: https://stackoverflow.com/a/78999261 (Chrome JS code >= 118)
-[^3]: [(Chromium `third_party/devtools-frontend` API change for `requestData()`)](https://source.chromium.org/chromium/_/chromium/devtools/devtools-frontend/+/0d87db62760f96b8efe54bb6a97c3450b372bb74:front_end/core/sdk/NetworkRequest.ts;dlc=37ae2d25449c0b76cb5559f60460707fee5e01b5)
+[^3]: [Chromium `third_party/devtools-frontend` API change for `requestData()`](https://source.chromium.org/chromium/_/chromium/devtools/devtools-frontend/+/0d87db62760f96b8efe54bb6a97c3450b372bb74:front_end/core/sdk/NetworkRequest.ts;dlc=37ae2d25449c0b76cb5559f60460707fee5e01b5)
   
