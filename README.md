@@ -164,17 +164,17 @@ let followers = await (async () => {
 
 ---
 
-#### Patch workaround
+### Manual patch workaround
+> [!TIP]
+> **The patch is currently __unnecessary__!!**
+>
+> As of [fbf4d30](https://github.com/5HT2/twitter-follower-rank/commit/fbf4d3024a2f20509e40baf95ae79693c4fbd499) it is automagically supported.
+
 > [!NOTE]
 > Twitter attempted to patch this (multiple times).
 > - As of 2024/03, Twitter switched `followers[n].content.content` → `followers[n].content.#g`
 > - As of 2024/04, Twitter switched `followers[n].content.#g` → `followers[n].content.#e`
 > - As of 2024/12, Twitter switched `followers[n].content.#e` → `followers[n].content`
-
-> [!TIP]
-> **The patch is currently __unnecessary__!!**
->
-> As of [fbf4d30](https://github.com/5HT2/twitter-follower-rank/commit/fbf4d3024a2f20509e40baf95ae79693c4fbd499) it is automagically supported.
 
 <details><summary>Patch workaround (currently unnecessary)</summary>
 
