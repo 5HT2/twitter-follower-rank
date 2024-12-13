@@ -119,7 +119,7 @@ let followers = await (async () => {
 })();
 ```
 </details>
-<details><summary><b>Chrome / Edge ≥ 111 ≤ 117</b>[^2]</summary>
+<details><summary><b>Chrome / Edge ≥ 111 ≤ 117</b><sup>[3](#jscode1)</sup></summary>
 
   ```javascript
   let followers = await (async () => {
@@ -180,3 +180,4 @@ For the most part, it's functional, with the rare 1 or 2 duplicate accounts, the
 
 [^1]: https://stackoverflow.com/a/57782978
 [^2]: https://stackoverflow.com/a/78999261
+<a name="jscode1">3</a>: testing 
