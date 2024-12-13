@@ -122,10 +122,11 @@ Once you've scrolled all the way to the bottom, <kbd>Right Click</kbd> the outpu
 #### Congrats! Now you can create a file called `data.json` inside this project, and paste the JSON object into it.
 The program itself handles all of the parsing and such from that point.
 
-#### NOTE: Twitter attempted to patch this.
+#### NOTE: Twitter attempted to patch this (multiple times).
 
 As of 2024/03, Twitter switched from `followers[n].content.content` to `followers[n].content.#g`.<br>
 As of 2024/04, Twitter switched from `followers[n].content.#g` to `followers[n].content.#e`.
+As of 2024/12, Twitter switched from `followers[n].content.#e` to `followers[n].content`.
 
 This is annoying, as it means the Chrome Dev tools don't include the final `.content` when doing "Copy Object", *but* there is a workaround.
 There's a `fix-chrome-private-field.applescript` script which you can run with `osascript fix-chrome-private-field.applescript [number of items]`.
