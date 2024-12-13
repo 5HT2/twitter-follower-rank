@@ -97,8 +97,8 @@ In the future, I'll probably add a way to also do this via Twitter's GDPR data r
 5. Once at the bottom, open a _new_ Dev Tools window for your existing Dev Tools window with <kbd>Ctrl</kbd> <kbd>Shift</kbd> <kbd>I</kbd> (yes, debug inception).
 6. In the new Dev Tools window, open the console tab (taken from StackOverflow[^1][^2]), works on Chrome 118 or newer) and run the following:
 > [!IMPORTANT]
-> If you encounter an error complaining about `r.contentData()`, use the newer ≥ 118 version.
-<details><summary><b>Chrome / Edge ≥ 118</b>[^1]</summary>
+> If you encounter an error complaining about `r.contentData()`, use the newer ≥ 118 version.[^3]
+<details><summary><b>Chrome / Edge ≥ 118</b></summary>
 
 ```javascript
 let followers = await (async () => {
@@ -119,7 +119,7 @@ let followers = await (async () => {
 })();
 ```
 </details>
-<details><summary><b>Chrome / Edge ≥ 111 ≤ 117</b><sup>[3](#jscode1)</sup></summary>
+<details><summary><b>Chrome / Edge ≥ 111 ≤ 117</b></summary>
 
   ```javascript
   let followers = await (async () => {
@@ -178,6 +178,6 @@ If you'd like a Linux version of the script, or know how to get around Chrome no
 For the most part, it's functional, with the rare 1 or 2 duplicate accounts, the follower counts might also be a lil outdated, this is just Twitter's caching / optimization stuff on their end.
 5. Idk this is really janky, if it breaks or there's something you want me to fix, feel free to ask lol
 
-[^1]: https://stackoverflow.com/a/57782978
-[^2]: https://stackoverflow.com/a/78999261
-<a name="jscode1">3</a>: testing 
+[^1]: https://stackoverflow.com/a/57782978 (Chrome JS code >= 111 <= 117)
+[^2]: https://stackoverflow.com/a/78999261 (Chrome JS code >= 118)
+[^3]: https://source.chromium.org/chromium/_/chromium/devtools/devtools-frontend/+/0d87db62760f96b8efe54bb6a97c3450b372bb74:front_end/core/sdk/NetworkRequest.ts;dlc=37ae2d25449c0b76cb5559f60460707fee5e01b5 (Chromium API change for `requestData\(\)`)
