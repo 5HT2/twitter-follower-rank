@@ -1,3 +1,4 @@
 .idea/
 data*.json
 twitter-follower-rank
+.run/
