@@ -26,6 +26,10 @@ var (
 	modeFollowed = flag.Bool("following", false, "Invert mutuals detection mode to the following tab instead of the followers tab")
 	modeRatio    = flag.Bool("ratio", false, "Only display followers with a following:follower ratio of >= -ratioBuf")
 	modeRatioBuf = flag.Float64("ratioBuf", 0.9, "Buffer for ranked. e.g. If set to 0.9, it will display if (followers / following >= 0.9)")
+	minFollowers = flag.Int("minFollowers", 0, "Filter to >= this many followers")
+	maxFollowers = flag.Int("maxFollowers", 0, "Filter to <= this many followers")
+	minFollowing = flag.Int("minFollowing", 0, "Filter to >= this many following")
+	maxFollowing = flag.Int("maxFollowing", 0, "Filter to <= this many following")
 )
 
 type FetchFollowersRange struct {
@@ -227,16 +231,40 @@ func main() {
 						continue
 					}
 
-					userFollowersCount := user.FollowersCount
-					userFriendsCount := user.FriendsCount
-					userRatio := float64(userFollowersCount) / float64(userFriendsCount)
+					numFollow := user.FollowersCount
+					numFriend := user.FriendsCount
 
-					if *modeRatio && (userRatio < *modeRatioBuf) {
+					// Filter to specified ranges of follower counts
+					if numFollow < *minFollowers {
+						continue
+					}
+					if numFollow > *maxFollowers && *maxFollowers > 0 {
+						continue
+					}
+					if numFriend < *minFollowing {
+						continue
+					}
+					if numFriend > *maxFollowing && *maxFollowing > 0 {
 						continue
 					}
 
-					user.FollowersCountStr = printer.Sprintf("%d", userFollowersCount)
-					user.FollowingRatioStr = fmt.Sprintf("%.2f", userRatio)
+					// Filter to follower:following ratio
+					userRatio := float64(numFollow) / float64(numFriend) // (followers / following)
+					passRatio := userRatio > *modeRatioBuf
+
+					// If a negative ratio is specified, we instead want to
+					// filter to following:follower ratio
+					if *modeRatioBuf < 0.0 {
+						userRatio = -1.0 * (float64(numFriend) / float64(numFollow)) // -1 * (following / followers)
+						passRatio = userRatio < *modeRatioBuf
+					}
+
+					if *modeRatio && !passRatio {
+						continue
+					}
+
+					user.FollowersCountStr = printer.Sprintf("%d", user.FollowersCount)
+					user.FollowingRatioStr = fmt.Sprintf("%.3f", userRatio)
 					entry.Content.ItemContent.UserResults.Result.Legacy = user
 
 					followers = append(followers, entry.Content.ItemContent.UserResults.Result)
